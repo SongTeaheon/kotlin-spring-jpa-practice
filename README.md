@@ -36,30 +36,30 @@ GET /membmers/{memberId}/items
 
 ## 상품(Item)
 상품 등록 - 책, 앨범, 영화. 
-POST /items/books
-POST /items/albums
-POST /items/movies
+POST /items/books.  
+POST /items/albums.  
+POST /items/movies.  
 
 상품 수정. 
-PUT /items/books/{itemId}. 
-PUT /items/albums/{itemId}. 
-PUT /items/movies/{itemId}. 
+PUT /items/books/{itemId}.  
+PUT /items/albums/{itemId}  
+PUT /items/movies/{itemId}.  
 
 상품 조회. 
 GET /items/{itemId}
 
 상품 전체 조회
-GET /items
-GET /items/books
-GET /items/albums
-GET /items/movies
-
+GET /items.  
+GET /items/books.  
+GET /items/albums.  
+GET /items/movies.  
+  
 
 ## 주문(Order)
-상품 주문
-POST /orders
+상품 주문.  
+POST /orders.  
 
-주문 조회
-GET /orders/{orderId}
+주문 조회.  
+GET /orders/{orderId}.  
 
 
