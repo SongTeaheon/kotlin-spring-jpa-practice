@@ -14,9 +14,13 @@ class MemberService(
     }
 
     fun changeName(memberId: Long, changedName: String): Member {
-        var mem = memberRepository.findById(memberId).orElseThrow { RuntimeException() }
+        val mem = memberRepository.findById(memberId).orElseThrow { RuntimeException() }
         mem.name = changedName
 
         return memberRepository.save(mem)
+    }
+
+    fun getMember(memberId: Long): Member {
+        return memberRepository.findById(memberId).orElseThrow{ RuntimeException() }
     }
 }
