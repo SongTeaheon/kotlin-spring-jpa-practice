@@ -27,7 +27,7 @@ GET /members
 id에 따른 회원 조회. 
 GET /members/{memberId}
 
-이름 변경. 
+이름 변경.  
 PUT /membmers/{memberId}
 name : 변경 후 이름. 
 
