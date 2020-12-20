@@ -8,35 +8,58 @@ Test코드에 대한 연습
 
 # api
 ## 회원(member)
-회원 등록
+회원 등록. 
 POST /members
 |이름|설명|필수여부|
-|------|---|---|
+|------|--------------------|---|
 |name|이름|o|
 |city|도시명||
 |street|도로명||
 |zipcode|우편번호||
 
-전체 회원 조회
+전체 회원 조회. 
 GET /members
 |이름|설명|필수여부|
-|------|---|---|
+|------|--------------------|---|
 |page|페이지 위치|x|
 |size|페이지 크기|o|
 
-
-id에 따른 회원 조회
+id에 따른 회원 조회. 
 GET /members/{memberId}
 
-이름 변경
+이름 변경. 
 PUT /membmers/{memberId}
-name : 변경 후 이름
+name : 변경 후 이름. 
+
+주문 내역 조회 
+GET /membmers/{memberId}/items
 
 ## 상품(Item)
-상품 등록
-POST /items
+상품 등록 - 책, 앨범, 영화. 
+POST /items/books
+POST /items/albums
+POST /items/movies
 
-상품 수정
-POST /items/{itemId]
+상품 수정. 
+PUT /items/books/{itemId}. 
+PUT /items/albums/{itemId}. 
+PUT /items/movies/{itemId}. 
 
-상품 조회
+상품 조회. 
+GET /items/{itemId}
+
+상품 전체 조회
+GET /items
+GET /items/books
+GET /items/albums
+GET /items/movies
+
+
+## 주문(Order)
+상품 주문
+POST /orders
+
+주문 조회
+GET /orders/{orderId}
+
+
