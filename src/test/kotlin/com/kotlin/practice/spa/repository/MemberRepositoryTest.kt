@@ -1,6 +1,7 @@
 package com.kotlin.practice.spa.repository
 
 import com.kotlin.practice.spa.entity.Member
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -13,12 +14,12 @@ import javax.transaction.Transactional
 
 @DataJpaTest
 @Transactional
-class MemberRepositoryTest(
+class MemberRepositoryTest {
     @Autowired
-    val em: TestEntityManager,
+    lateinit var em: TestEntityManager
+
     @Autowired
-    val memberRepository: MemberRepository
-) {
+    lateinit var memberRepository: MemberRepository
 
     @Test
     @Transactional
