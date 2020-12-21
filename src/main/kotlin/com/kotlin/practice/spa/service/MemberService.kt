@@ -3,6 +3,7 @@ package com.kotlin.practice.spa.service
 import com.kotlin.practice.spa.entity.Member
 import com.kotlin.practice.spa.repository.MemberRepository
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 
@@ -10,8 +11,14 @@ import org.springframework.stereotype.Service
 class MemberService(
     val memberRepository: MemberRepository
 ) {
-    fun getAllMembers(page: Int, size: Int): List<Member> {
-        val pageRequest = PageRequest.of(page, size, Sort.by("id").descending())
+    fun getAllMembers(page: Int?, size: Int?): List<Member> {
+        val pageRequest =
+            if (page == null || size == null) {
+                Pageable.unpaged()
+            } else {
+                PageRequest.of(page, size, Sort.by("id").descending())
+            }
+
         return memberRepository.findAll(pageRequest).toList()
     }
 
@@ -23,6 +30,6 @@ class MemberService(
     }
 
     fun getMember(memberId: Long): Member {
-        return memberRepository.findById(memberId).orElseThrow{ RuntimeException() }
+        return memberRepository.findById(memberId).orElseThrow { RuntimeException() }
     }
 }

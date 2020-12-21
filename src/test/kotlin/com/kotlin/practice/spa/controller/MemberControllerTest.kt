@@ -10,6 +10,7 @@ import com.kotlin.practice.spa.service.MemberService
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import org.hamcrest.Matchers.hasSize
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -32,27 +33,36 @@ class MemberControllerTest {
     @Autowired
     lateinit var mockMvc: MockMvc
 
-    @MockK
+    @Autowired
     lateinit var memberService: MemberService
 
-    @Test
-    fun `test getAllMembers`() {
-        //given
-        val list = listOf(
-            Member(id = 1, name = "kim"),
-            Member(id = 2, name = "song"),
-            Member(id = 3, name = "chang")
-        )
-        every { memberService.getAllMembers(0, 3) } returns list.subList(0, 3)
+    @Nested
+    inner class TestGetAllMember {
+        @Test
+        fun `with paging`() {
+            //when
+            mockMvc.perform(
+                get("/members")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .param("size", "3")
+                    .param("page", "1")
+            ).andDo(print())
+                .andExpect(jsonPath("$", hasSize<Any>(3)))
+        }
 
-        //when
-        mockMvc.perform(
-            get("/members")
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("size", "3")
-                .param("page", "1")
-        ).andDo(print())
-            .andExpect(jsonPath("$", hasSize<Any>(3)))
+        @Test
+        fun `no paging`() {
+            //given
+            val sizeExpected = memberService.getAllMembers(null, null).size
+
+            //when
+            mockMvc.perform(
+                get("/members")
+                    .contentType(MediaType.APPLICATION_JSON)
+            ).andDo(print())
+                .andExpect(jsonPath("$", hasSize<Any>(sizeExpected)))
+        }
     }
+
 
 }
