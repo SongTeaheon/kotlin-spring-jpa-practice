@@ -12,8 +12,8 @@ class MemberController(
     val memberService: MemberService
 ) {
     @GetMapping
-    fun getAllMembers(): List<Member> {
-        return memberService.getAllMembers()
+    fun getAllMembers(page: Int, size: Int): List<Member> {
+        return memberService.getAllMembers(page - 1, size) //controller는 page가 1부터 시작.
     }
 
 }

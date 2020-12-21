@@ -9,6 +9,7 @@ import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
+import org.springframework.data.domain.PageRequest
 import javax.persistence.EntityManager
 import javax.transaction.Transactional
 
@@ -23,7 +24,7 @@ class MemberRepositoryTest {
 
     @Test
     @Transactional
-    fun `findAll 테스트 (영속성 컨텍스트에만 있는 경우)`() {
+    fun `findAll 테스트_paging`() {
         //given
         val m1 = Member(name = "song")
         val m2 = Member(name = "kim")
@@ -31,10 +32,12 @@ class MemberRepositoryTest {
         em.persist(m2)
 
         //when
-        val allMembers = memberRepository.findAll()
+        var pageRequest = PageRequest.of(0, 1)
+        val allMembers = memberRepository.findAll(pageRequest)
 
         //then
-        Assertions.assertEquals(2, allMembers.size)
+        Assertions.assertEquals(1, allMembers.size)
+        Assertions.assertEquals(listOf(m1), allMembers.toList())
     }
 
     @Test

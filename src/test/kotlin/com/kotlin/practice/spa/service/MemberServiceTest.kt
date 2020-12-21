@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.springframework.data.domain.*
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -20,23 +21,36 @@ class MemberServiceTest {
     inner class GetAllMemberTest {
         @Test
         fun `회원이 없는 경우`() {
+            //givne
+            val pageRequest = PageRequest.of(1, 10, Sort.by("id").descending())
+
             //when
-            every { memberRepository.findAll() } returns emptyList()
+            every { memberRepository.findAll(pageRequest) } returns Page.empty()
 
             //then
-            Assertions.assertIterableEquals(emptyList<Member>(), memberService.getAllMembers())
+            Assertions.assertIterableEquals(emptyList<Member>(), memberService.getAllMembers(1, 10))
         }
 
         @Test
         fun `회원이 있는 경우`() {
             //given
-            val list = listOf(Member(id = 1, name = "kim"), Member(id = 2, name = "song"), Member(id = 3, name = "chang"))
+            val list =
+                listOf(
+                    Member(id = 1, name = "kim"),
+                    Member(id = 2, name = "song"),
+                    Member(id = 3, name = "chang"),
+                    Member(id = 4, name = "kim"),
+                    Member(id = 5, name = "song"),
+                    Member(id = 6, name = "chang")
+                )
+            val pageRequest = PageRequest.of(0, 3, Sort.by("id").descending())
 
             //when
-            every { memberRepository.findAll() } returns list
+            val page = PageImpl(list.subList(0, 3), pageRequest, list.size.toLong())
+            every { memberRepository.findAll(pageRequest) } returns page
 
             //then
-            Assertions.assertIterableEquals(list, memberService.getAllMembers())
+            Assertions.assertIterableEquals(list.subList(0, 3), memberService.getAllMembers(0, 3))
         }
     }
 
